@@ -1,0 +1,29 @@
+{
+  "name": "jsazure",
+  "version": "1.0.0",
+  "description": "",
+  "main": "jsazure.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon jsazure.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@azure-rest/ai-inference": "^1.0.0-beta.6",
+    "@azure-rest/ai-vision-image-analysis": "^1.0.0-beta.3",
+    "@azure/core-auth": "^1.10.1",
+    "@azure/identity": "^4.13.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "fs": "^0.0.1-security",
+    "microsoft-cognitiveservices-speech-sdk": "^1.50.0",
+    "multer": "^2.2.0",
+    "nodemon": "^3.1.14",
+    "openai": "^6.46.0",
+    "path": "^0.12.7"
+  }
+}
