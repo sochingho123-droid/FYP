@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>藥物智能影像辨識系統</title>
+    <style>
+        :root {
+            --primary-color: #2c7a7b;
+            --primary-hover: #234e52;
+            --bg-color: #f7fafc;
+            --card-bg: #ffffff;
+            --text-color: #2d3748;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            width: 100%;
+            max-width: 600px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        /* 表單與上傳區塊 */
+        .upload-form {
+            margin: 0;
+            padding: 0;
+        }
+
+        .upload-area {
+            border: 2px dashed #cbd5e0;
+            border-radius: 8px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            background-color: #fcfcfc;
+            display: block;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary-color);
+            background-color: #edf2f7;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            color: #a0aec0;
+            margin-bottom: 10px;
+        }
+
+        .file-input-field {
+            width: 100%;
+            margin-top: 10px;
+            box-sizing: border-box;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* 靜態結果欄位展示 */
+        .result-panel {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f7fafc;
+            border: 1px solid #e2e8f0;
+        }
+
+        .result-title {
+            color: #2c7a7b;
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 5px;
+        }
+
+        .result-item {
+            margin: 8px 0;
+            font-size: 15px;
+        }
+
+        .result-label {
+            font-weight: bold;
+            color: #2c5282;
+        }
+
+        .disclaimer {
+            font-size: 12px;
+            color: #718096;
+            margin-top: 25px;
+            text-align: justify;
+            line-height: 1.5;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 15px;
+        }
+        html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+            background-color: #f8fafc;
+            /* 确保 body 是标准的块级垂直排列，不要在这里写 display: flex; 居中 */
+            display: block; 
+        }
+
+        /* 2. 确保导航栏自由横跨屏幕 */
+        .main-header {
+            width: 100%;
+            background-color: #2e7d32;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 24px;
+            box-sizing: border-box; /* 锁死宽度，防止 padding 撑破 100% */
+        }
+
+        /* 3. 让下方的图片识别区域保持美观和居中 */
+        .container {
+            max-width: 600px;       /* 限制识别卡片的最大宽度，防止在宽屏上变形 */
+            margin: 40px auto;      /* 通过 auto 让整个卡片在导航栏下方水平居中 */
+            padding: 0 20px;        /* 移动端两侧防贴边留白 */
+            box-sizing: border-box;
+        }
+        .main-header {
+            width: 100% !important;
+            background-color: #2e7d32; /* 绿色背景 */
+            display: flex !important;
+            justify-content: space-between; /* 三个区域两端对齐 */
+            align-items: center; /* 确保所有文字、输入框垂直方向完美居中 */
+            padding: 14px 40px; /* 上下留出 14px，左右留出 40px 的舒适空间 */
+            box-sizing: border-box;
+        }
+
+        /* 2. 左侧 Logo：增大字号，防止缩成一团 */
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: white;
+            white-space: nowrap; /* 防止品牌名字换行 */
+        }
+        .logo-m {
+            color: #f6ad55; /* M 字母的橙黄色 */
+            font-size: 24px;
+        }
+
+        /* 3. 中间 搜索框区域：给它一个合理的宽度 */
+        .search-container {
+            flex: 0 1 500px; /* 限制搜索栏最大宽度为 500px */
+            margin: 0 30px;
+        }
+        .search-form {
+            display: flex;
+            width: 100%;
+        }
+        .search-input {
+            flex-grow: 1;
+            padding: 8px 16px;
+            font-size: 14px;
+            border: none;
+            border-radius: 20px 0 0 20px; /* 左侧圆角 */
+            outline: none;
+        }
+        .search-btn {
+            background-color: #e2e8f0;
+            color: #4a5568;
+            border: none;
+            padding: 0 20px;
+            font-size: 13px;
+            cursor: pointer;
+            border-radius: 0 20px 20px 0; /* 右侧圆角 */
+        }
+
+        /* 4. 右侧 按钮区域：拉开两个按钮的间距 */
+        .header-actions {
+            display: flex;
+            gap: 16px; /* 登录和购物车按钮之间留出 16px 空隙 */
+        }
+        .action-btn {
+            background-color: rgba(255, 255, 255, 0.15); /* 半透明白底 */
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 18px;
+            font-size: 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .action-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        .container {
+            width: 100%;
+            max-width: 1200px; /* 将最大宽度放大到 1200px，这样商品展示才能排开 */
+            margin: 30px auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* 确保上方的图像识别卡片依然在中间对齐 */
+        }
+
+        /* 强制让顶部的识别表单和结果面板保持之前紧凑好看的宽度 */
+        .upload-form, .result-panel, .disclaimer {
+            width: 100%;
+            max-width: 650px; /* 限制识别工具的宽度 */
+        }
+        .product-section {
+            width: 100%;
+            margin-top: 50px; /* 与上方的免责声明拉开间距 */
+            margin-bottom: 40px;
+        }
+
+        /* 标题样式 */
+        .section-title {
+            text-align: center;
+            font-size: 24px;
+            color: #2d3748;
+            margin-bottom: 24px;
+            font-weight: bold;
+        }
+
+        /* 网格核心布局：实现自动横向排列 */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            width: 100%;
+            margin-top: 20px;
+            box-sizing: border-box;
+        }
+
+        /* 2. 单个商品卡片主体 */
+        .product {
+            background: #ffffff;
+            border: 1px solid #edf2f7;
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+
+        /* 鼠标悬停卡片特效：平滑上浮并增加阴影 */
+        .product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.08);
+            border-color: #cbd5e0;
+        }
+
+        /* ==========================================================================
+        🔗 上半部分：可点击区域 (Clickable Area)
+        ========================================================================== */
+
+        .product_clickable_area {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            margin-bottom: 12px;
+        }
+
+        /* 商品缩略图容器：确保不同尺寸的药品包装图都能完美等比居中显示 */
+        .product_thumbnail {
+            width: 100%;
+            height: 160px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffffff;
+            margin-bottom: 14px;
+            overflow: hidden;
+        }
+
+        .product_thumbnail img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain; /* 保持药品包装不因拉伸而变形 */
+            transition: transform 0.3s ease;
+        }
+
+        /* 悬停时图片轻微放大 */
+        .product:hover .product_thumbnail img {
+            transform: scale(1.04);
+        }
+
+        /* 品牌名与商品名文字排版 */
+        .product_name_brand h3 {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #a0aec0;
+            margin: 0 0 4px 0;
+            letter-spacing: 0.8px;
+        }
+
+        .product-title-link {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2d3748;
+            line-height: 1.4;
+            display: -webkit-box;
+/* 药品名字最多显示2行，超出部分显示省略号 */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* ==========================================================================
+        🛠️ 下半部分：详情与购物车表单 (Details & Form)
+        ========================================================================== */
+
+        .product_details {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* 类别标签与价格在一行对齐 */
+        .product_details .title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 药品功能类型标签 (如 Pain Relief) */
+        .product_details .title h3 {
+            font-size: 12px;
+            font-weight: 500;
+            background-color: #f0fff4; /* 浅绿底色 */
+            color: #38a169;            /* 深绿文字 */
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;   /* 防止类型文本过长撑破布局 */
+        }
+
+        /* 价格标签 */
+        .price_tag {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2e7d32;
+        }
+
+        /* 3. 提交按钮样式 */
+        .buy-out {
+            width: 100%;
+            background-color: #2e7d32; /* 统一沿用导航栏的绿色生态系 */
+            color: #ffffff;
+            border: none;
+            padding: 10px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+
+        .buy-out:hover {
+            background-color: #1b5e20; /* 悬停时加深绿色 */
+        }
+
+        .buy-out:active {
+            transform: scale(0.98); /* 点击时轻微下压反馈 */
+        }
+        button.buy-but {
+            display: block !important;
+            width: 100% !important;
+            background-color: #2e7d32 !important; /* 统一的生态绿 */
+            color: #ffffff !important;
+            border: none !important;
+            padding: 10px 16px !important;
+            font-size: 14px !important;
+            font-weight: 500 !important;
+            border-radius: 8px !important;
+            cursor: pointer !important;
+            text-align: center !important;
+            box-sizing: border-box !important;
+            transition: background-color 0.2s ease, transform 0.1s ease !important;
+            margin-top: 10px;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        /* 鼠标悬停变深绿 */
+        button.buy-but:hover {
+            background-color: #1b5e20 !important;
+        }
+
+        /* 点击时的微弱按压反馈 */
+        button.buy-but:active {
+            transform: scale(0.98) !important;
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <!-- 左侧 Logo 区域 -->
+        <div class="logo">
+            <span class="logo-m">M</span>Medication
+        </div>
+    
+        <!-- 中间 搜索框区域 -->
+        <div class="search-container">
+            <form action="/search" method="GET" class="search-form">
+                <input type="text" name="query" placeholder="Search medications..." class="search-input">
+                <button type="submit" class="search-btn">search</button>
+            </form>
+        </div>
+    
+        <!-- 右侧 功能按钮区域 -->
+        <div class="header-actions">
+            <% if(userData.role !== 'user' && userData.role !== 'admin'){ %>
+                <button type="button" class="action-btn" onclick="window.location.href='/login'" > login </button>
+            <%} else if(userData.role === "admin") {%>
+                <button type="button" class="action-btn" onclick="window.location.href='/productlist'" >product list</button>
+                <button type="button" class="action-btn" onclick="window.location.href='/userlist'" > user list </button>
+                <button type="button" class="action-btn" onclick="window.location.href='/logout'" > logout </button>
+                <button type="button" class="action-btn" onclick="window.location.href='/profile'" > profile </button>
+            <% } else{ %>
+                <button type="button" class="action-btn" onclick="window.location.href='/logout'" >logout</button>
+                <button type="button" class="action-btn" onclick="window.location.href='/profile'" >profile</button>
+            <% } %>
+            <button class="action-btn" type="button" onclick="window.location.href='/cart'">cart</button>
+            
+        </div>
+    </header>
+<div class="container">
+    <h1>💊 Medication Image Recognition</h1>
+    
+    <!-- 後端表單提交區塊 -->
+    <form class="upload-form" action="/upload-endpoint" method="POST" enctype="multipart/form-data">
+        <label class="upload-area">
+            <div class="upload-icon">📸</div>
+            <p style="margin: 5px 0; font-weight: 500;">Upload a photo to get start</p>
+            <p style="margin: 0; font-size: 13px; color: #a0aec0;"></p>
+            <input type="file" name="image" accept="image/*" class="file-input-field" required>
+        </label>
+        
+        <button type="submit" class="btn">Start Identify</button>
+        <div><%= message %></div>
+    </form>
+
+    <!-- 辨識結果區塊 (靜態範例) -->
+    <div class="result-panel">
+        <h3 class="result-title">🔍 Result</h3>
+        <input type="hidden" id="backend-data" value="<%= ad %>">
+        <div class="result-item"><span class="result-label">Medication Waring：</span> <span><%= data.waring%></span></div>
+        <div class="result-item"><span class="result-label">Medication Number：</span> <span><%= data.mnum%></span></div>
+        <div class="result-item"><span class="result-label">Medication Quantity：</span> <span><%= data.mquantity%></span></div>
+        <div class="result-item"><span class="result-label">Medication Name：</span> <span><%= data.mname%></span></div>
+        <div class="result-item"><span class="result-label">Medication Use：</span> <span><%= data.muse%></span></div>
+        <div class="result-item"><span class="result-label">Medication From：</span> <span><%= data.mform%></span></div>
+        <div class="result-item"><span class="result-label">Medication Strength：</span> <span><%= data.mstrength%></span></div>
+        <div class="result-item"><span class="result-label">Medication Notice：</span> <span><%= data.mnotice%></span></div>
+        <div class="result-item"><span class="result-label">Medication Expiry Date：</span> <span><%= data.mdate%></span></div>
+    </div>
+
+    <!-- 免責聲明 -->
+    <div class="disclaimer">
+        <strong>⚠️ Medical Disclaimer：</strong>
+        he identification results on this webpage are for reference only. Errors may occur in the automated system due to factors such as lighting, camera angles, or packaging updates. Please be sure to verify the information against the label on the actual product packaging and do not take medication without proper confirmation. If you have any questions regarding medication, please consult a licensed pharmacist or seek professional medical assistance.
+    </div>
+</div>
+
+
+
+
+
+<div class="product-section">
+    <h2 class="section-title">Are you looking for</h2>
+    <div class="product-grid">
+        <% if (typeof productData !== 'undefined' && Array.isArray(productData) && productData.length > 0) { %>
+            <% for (let i=0; i <Math.min(productData.length, 4); i++) { %>
+                <div class="product">
+                            
+                    <!-- 1. 点击图片或名字跳转到详情页 -->
+                    <div class="product_clickable_area" onclick="window.location.href='/detail?id=<%= productData[i].pid %>'" style="cursor: pointer;">
+                        <div class="product_thumbnail">
+                            <img src="/img/<%= productData[i].img %>" alt="<%= productData[i].name %>">
+                        </div>
+                        <div class="product_name_brand">
+                            <h3><%= productData[i].brand %></h3>
+                            <a><%= productData[i].name %></a>
+                        </div>
+                    </div>
+                    
+                    <!-- 2. 商品详情与独立表单区域（和跳转区域彻底分离开） -->
+                    <div class="product_details">
+                        <div class="title">
+                            <h3><%= productData[i].mtype %></h3>
+                            <span class="price_tag">$<%= productData[i].price %></span>
+                        </div>
+                        
+                        <!-- 购物车提交表单（从 span 和 i 标签中彻底解放出来，保证标准 HTML 结构） -->
+                        <form action="/cart/add" method="post" class="add_to_cart_form">
+                            <input type="hidden" name="type" value="<%= productData[i].type %>">
+                            <input type="hidden" name="mtype" value="<%= productData[i].mtype %>">
+                            <input type="hidden" name="name" value="<%= productData[i].name %>">
+                            <input type="hidden" name="brand" value="<%= productData[i].brand %>">
+                            <input type="hidden" name="size" value="<%= productData[i].size %>">
+                            <input type="hidden" name="price" value="<%= productData[i].price %>">
+                            <input type="hidden" name="img" value="<%= productData[i].img %>">
+                            
+                            <button type="submit" class="buy-but">Add to cart</button>
+                        </form>
+                    </div>
+
+                </div>
+            <% } %>
+        <%}else {%>
+            <div class="hollow">No products found simular to this medication</div>
+        <%}%>
+    </div>
+</div>
+
+
+<script>
+// 1. 將您的前端邏輯封裝成一個異步函數
+    /*const dataEl = document.getElementById('backend-data');
+    const dataFromBackend = JSON.parse(dataEl.value);
+    async function handleUploadAndSpeech(event) {
+        if (event) event.preventDefault(); // 如果是用表單提交，阻止網頁跳轉刷新
+
+        try {
+            // 這裡放您原本寫得非常漂亮的前端 Fetch 邏輯
+            const speechurl = `http://localhost:1000/speech`;
+            const speechoptions = {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    waring: dataFromBackend.waring,
+                    mname: dataFromBackend.mname,
+                    muse: dataFromBackend.muse,
+                    mnotice: dataFromBackend.mnotice,
+                    mdate: dataFromBackend.mdate
+                })
+            };
+
+            const speechrawData = await fetch(speechurl, speechoptions);
+            if (speechrawData.status !== 200) throw `speech error`;
+            
+            const audioBlob = await speechrawData.blob();
+            console.log(audioBlob)
+            const audioUrl = URL.createObjectURL(audioBlob);
+            console.log(audioUrl)
+            
+            // 👍 在這裡（瀏覽器環境），Audio 絕對會被定義，並且能完美播放！
+            const audio = new Audio(audioUrl);
+            console.log(audio)
+            audio.play();
+            
+        } catch (error) {
+            console.error("前端執行出錯:", error);
+        }
+    }
+
+window.addEventListener('DOMContentLoaded', handleUploadAndSpeech)*/
+    async function handleUploadAndSpeech(event) {
+            if (event) event.preventDefault();
+              try {
+                const dataEl = document.getElementById('backend-data');
+                if (!dataEl) {
+                    console.error("未找到 id 为 backend-data 的元素");
+                    return;
+                }
+
+                // 1. 获取后端传来的完美 Base64 字符串（不作任何裁剪，保持原汁原味）
+                const rawBase64 = dataEl.value.trim();
+                if (!rawBase64) {
+                    console.warn("输入框内没有检测到音频数据");
+                    return;
+                }
+
+                // 2. 【核心修复】使用最稳健的底层技术，将 Base64 文本还原为纯二进制字节数组
+                const binaryString = window.atob(rawBase64);
+                const len = binaryString.length;
+                const bytes = new Uint8Array(len);
+                for (let i = 0; i < len; i++) {
+                    bytes[i] = binaryString.charCodeAt(i);
+                }
+
+                // 3. 【终极关键点】不要硬编码写 '{ type: "audio/mpeg" }'！
+                // 保持 type 为空，这样浏览器在通过本地 URL 读取时，会自动分析数据包的前几个字节
+                // 无论它是 MP3, WebM, Ogg 还是 AAC，浏览器都能自动对号入座，调用正确的解码器！
+                const audioBlob = new Blob([bytes.buffer]);
+                console.log(audioBlob)
+
+                // 4. 生成全格式兼容的本地临时播放 URL
+                const audioUrl = URL.createObjectURL(audioBlob);
+                const audio = new Audio(audioUrl);
+                
+                // 5. 尝试直接播放
+                audio.play().then(() => {
+                    console.log("音频自适应解析成功，已开始自动播放！");
+                }).catch(e => {
+                    console.log("已被浏览器自动播放安全机制拦截，正在监听您的首次点击动作解锁...");
+                    
+                    // 只要用户在页面任意地方点一下，声音立刻通过自适应内核破冰播放
+                    document.addEventListener('click', () => {
+                        audio.play().then(() => {
+                            console.log("用户点击成功，音频开始播放！");
+                        }).catch(err => {
+                            console.error("【极其罕见】格式全自动兼容依然失败，请确认您后端调用的 TTS 接口返回的到底是什么音频格式？", err);
+                        });
+                    }, { once: true });
+                });
+
+            } catch (error) {
+                console.error("前端解析并播放音频发生异常:", error);
+            }
+    }
+
+
+
+
+
+window.addEventListener('DOMContentLoaded', handleUploadAndSpeech)
+</script>
+
+</body>
+</html>
