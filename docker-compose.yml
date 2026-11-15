@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  php:
+    build: ./services/backend_php
+    container_name: fyp-php
+    volumes:
+      - .:/var/www/html
+    working_dir: /var/www/html
+    networks:
+      - fyp-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: fyp-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - .:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - php
+      - nodejs
+      - python
+    networks:
+      - fyp-network
+
+  
+  nodejs:
+    image: node:current-alpine 
+    container_name: fyp-nodejs
+    working_dir: /home/node/app
+    volumes:
+      - ./services/backend_js:/home/node/app
+    ports:
+      - "3000:3000"
+    command: "node project.js" 
+    networks:
+      - fyp-network
+
+  
+  python:
+    build: ./services/backend_py
+    container_name: fyp-python
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./services/backend_py:/app
+    networks:
+      - fyp-network
+
+
+  db:
+    image: mysql:8.4.11
+    container_name: fyp-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: fyp_db
+      MYSQL_USER: Donald914
+      MYSQL_PASSWORD: 59838384
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - fyp-network
+
+networks:
+  fyp-network:
+    driver: bridge
+
+volumes:
+  db_data:
