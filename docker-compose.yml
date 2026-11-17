@@ -33,7 +33,7 @@ services:
     volumes:
       - ./services/backend_js:/home/node/app
     expose:
-      - "5354:5354"
+      - "5354
     command: "node project.js" 
     networks:
       - fyp-network
@@ -43,7 +43,7 @@ services:
     build: ./services/backend_py
     container_name: fyp-python
     expose:
-      - "9538:9538"
+      - "9538
     volumes:
       - ./services/backend_py:/app
     networks:
