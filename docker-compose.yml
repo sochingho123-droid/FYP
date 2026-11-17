@@ -60,7 +60,7 @@ services:
       MYSQL_USER: Donald914
       MYSQL_PASSWORD: 59838384
     expose:
-      - "3307:3306"
+      - "3306"
     volumes:
       - db_data:/var/lib/mysql
     networks:
