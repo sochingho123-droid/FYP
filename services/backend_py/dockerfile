@@ -8,7 +8,8 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
-RUN pip install --no-cache-dir ultralytics opencv-python flask
+RUN pip install --no-cache-dir torch torchvision --index-url https://pytorch.org
+RUN pip install --no-cache-dir ultralytics opencv-python-headless flask
 
 COPY . .
 
