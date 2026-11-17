@@ -1,0 +1,7 @@
+{
+    "require": {
+        "phroute/phroute": "^2.2",
+        "guzzlehttp/guzzle": "^8.2",
+        "vlucas/phpdotenv": "^5.7"
+    }
+}

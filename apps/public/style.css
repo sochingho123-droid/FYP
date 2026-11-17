@@ -1,0 +1,488 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f5; /* 淡淡的绿灰色底，视觉更舒适 */
+    color: #333;
+    line-height: 1.6;
+}
+
+/* 统一的页面大标题 */
+h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin: 30px 0;
+    font-size: 2rem;
+}
+
+/* 统一的全局按钮动效基础 */
+.btn, button {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    font-family: inherit;
+}
+.btn:active, button:active {
+    transform: scale(0.98);
+}
+
+/* ------------------------------------------
+   导航栏样式展示（根据你截图里的顶部绿条和搜索框编写）
+   ------------------------------------------ */
+.header {
+    background-color: #2e7d32; /* 标志性药房深绿色 */
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.header_search input {
+    width: 350px;
+    padding: 8px 15px;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    outline: none;
+}
+.header-right {
+    display: flex;
+    gap: 15px;
+}
+.header-right button {
+    background: rgba(255,255,255,0.15);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+}
+.header-right button:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+/* ------------------------------------------
+   通用三栏布局侧边栏基础（适配你的 asidel 和 aside2）
+   ------------------------------------------ */
+.mainbody {
+    display: flex;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 20px;
+    gap: 20px;
+}
+.asidel, .aside2 {
+    flex: 0 0 200px; /* 两侧固定宽度 */
+}
+.products, .productdetail, .cart {
+    flex: 1; /* 中间内容区域自动撑开 */
+}
+
+
+/* ==========================================
+   2. 页面一：主页商品网格 (Page 1: Main Products Grid)
+   ========================================== */
+.product_container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 25px;
+    padding: 10px 0;
+}
+
+/* 单个商品卡片 */
+.product {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.product:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(46, 125, 50, 0.1);
+    border-color: #2e7d32;
+}
+
+/* 可点击的图片和文本区域 */
+.product_clickable_area {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-decoration: none;
+    color: inherit;
+}
+.product_thumbnail {
+    width: 100%;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fafafa;
+    border-radius: 8px;
+    padding: 10px;
+}
+.product_thumbnail img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+.product_name_brand h3 {
+    font-size: 0.85rem;
+    color: #888;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+.product_name_brand a {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #2c3e50;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden; /* 防止长文本撑破布局 */
+}
+
+/* 底部价格与表单按钮 */
+.product_details {
+    margin-top: 15px;
+    border-top: 1px dashed #f0f0f0;
+    padding-top: 12px;
+}
+.product_details .title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+.product_details .title h3 {
+    font-size: 0.8rem;
+    background: #edf2f7;
+    padding: 2px 8px;
+    border-radius: 4px;
+    color: #4a5568;
+}
+.price_tag {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #2e7d32;
+}
+.buy-but {
+    width: 100%;
+    background-color: #2e7d32;
+    color: white;
+    padding: 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+.buy-but:hover {
+    background-color: #1b5e20;
+}
+
+
+/* ==========================================
+   3. 页面二：商品详情页 (Page 2: Product Detail)
+   ========================================== */
+.product_detail_card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.04);
+    display: flex;
+    gap: 40px;
+    padding: 40px;
+    border: 1px solid #e8f5e9;
+}
+.product_thumbnail_wrapper {
+    flex: 1 1 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    border: 1px solid #f0f0f0;
+    border-radius: 12px;
+    padding: 30px;
+    min-height: 300px;
+}
+.product_thumbnail_wrapper img {
+    max-width: 100%;
+    max-height: 350px;
+    object-fit: contain;
+}
+.product_info_wrapper {
+    flex: 1.2 1 350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.product_category_tag {
+    align-self: flex-start;
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    padding: 4px 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 20px;
+    margin-bottom: 15px;
+}
+.product_brand {
+    font-size: 1.1rem;
+    color: #a0aec0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+.product_name {
+    font-size: 2.2rem;
+    color: #1a202c;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+.product_price_section {
+    border-top: 1px solid #edf2f7;
+    border-bottom: 1px solid #edf2f7;
+    padding: 15px 0;
+    margin-bottom: 30px;
+}
+.price_label {
+    font-size: 0.95rem;
+    color: #718096;
+}
+.product_price {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #2e7d32;
+    margin-left: 5px;
+}
+.product_actions {
+    display: flex;
+    gap: 15px;
+}
+.btn_add_cart {
+    background-color: #2e7d32;
+    color: white;
+    flex: 2;
+    padding: 14px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1.05rem;
+}
+.btn_add_cart:hover {
+    background-color: #1b5e20;
+}
+.btn_back {
+    background-color: #edf2f7;
+    color: #4a5568;
+    flex: 1;
+    padding: 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    border: 1px solid #cbd5e0;
+}
+.btn_back:hover {
+    background-color: #e2e8f0;
+}
+
+
+/* ==========================================
+   4. 页面三：购物车结算页 (Page 3: Shopping Cart)
+   ========================================== */
+.cart {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    max-width: 900px;
+    margin: 20px auto;
+}
+
+.cart h1 {
+    text-align: left;
+    margin-top: 0;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #2e7d32;
+    font-size: 1.6rem;
+}
+
+/* 强行控制购物车容器内的商品，使其变成横向一行 */
+.cart_product_container .product {
+    display: flex !important;           /* 强制使用弹性盒模型 */
+    flex-direction: row !important;     /* 强行改变为横向排列 */
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;             /* 撑满整行宽度 */
+    max-width: 100% !important;
+    padding: 20px 0 !important;
+    border-bottom: 1px solid #edf2f7 !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    background: transparent !important; /* 移除白底阴影 */
+    box-shadow: none !important;
+    transform: none !important;         /* 移除主页卡片的悬浮放大效果 */
+    gap: 30px;
+}
+
+/* 缩略图保持固定大小，靠左排列 */
+.cart_product_container .product_thumbnail {
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fafafa;
+    border-radius: 6px;
+    padding: 5px;
+}
+
+.cart_product_container .product_thumbnail img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* 名字和品牌居中靠左，撑开中间剩余空间 */
+.cart_product_container .product_name_brand {
+    flex: 2;
+    text-align: left; /* 强行左对齐 */
+}
+
+.cart_product_container .product_name_brand h3 {
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 5px;
+}
+
+.cart_product_container .product_name_brand a {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+/* 右侧分类与价格靠右对齐 */
+.cart_product_container .product_details {
+    flex: 1;
+    text-align: right; /* 强行右对齐 */
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    border-top: none !important;
+}
+
+.cart_product_container .product_details .title {
+    display: flex;
+    flex-direction: column; /* 让分类和价格上下排列 */
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.cart_product_container .product_details h3 {
+    font-size: 0.8rem;
+    background: #edf2f7;
+    padding: 2px 8px;
+    border-radius: 4px;
+    color: #4a5568;
+    margin: 0;
+}
+
+.cart_product_container .price_tag {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #2e7d32;
+}
+
+.btn-delete, .btn-pay {
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 600;
+    border-radius: 6px; /* 圆角让视觉更柔和 */
+    transition: all 0.2s ease-in-out; /* 平滑渐变动画 */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px; /* 图标和文字的间距 */
+}
+
+/* 60行：删除商品按钮（文本/幽灵纽样式） */
+.btn-delete {
+    background-color: transparent;
+    color: #888888; /* 默认灰色，不抢眼 */
+    padding: 6px 12px;
+    font-size: 14px;
+}
+
+.btn-delete:hover {
+    color: #e27d32; /* 悬停时变成警告红/橙色 */
+    background-color: rgba(226, 125, 50, 0.08); /* 淡淡的底色背景 */
+}
+
+/* 66行：立即支付按钮（显眼的主行动点） */
+.btn-pay {
+    background-color: #2e7d32; /* 使用您代码中的深绿色或改成主色调 */
+    color: #ffffff;
+    padding: 12px 28px;
+    font-size: 16px;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 6px rgba(46, 125, 50, 0.15); /* 淡淡的投影增加立体感 */
+}
+
+.btn-pay:hover {
+    background-color: #256428; /* 悬停时颜色加深 */
+    transform: translateY(-1px); /* 轻轻上浮 */
+    box-shadow: 0 6px 12px rgba(46, 125, 50, 0.2);
+}
+
+.btn-pay:active {
+    transform: translateY(1px); /* 点击时下沉反馈 */
+}
+/* ==========================================
+   5. 响应式移动端适配 (Responsive Media Queries)
+   ========================================== */
+@media (max-width: 992px) {
+    .mainbody {
+        flex-direction: column; /* 窄屏时取消三栏，垂直堆叠 */
+    }
+    .asidel, .aside2 {
+        display: none; /* 在手机移动端隐藏无内容的装饰性两侧栏 */
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    .header_search input {
+        width: 100%;
+    }
+    .product_detail_card {
+        flex-direction: column;
+        padding: 20px;
+    }
+    .product_name {
+        font-size: 1.6rem;
+    }
+    .cart_product_container .product {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+    .cart .product_details {
+        text-align: center;
+    }
+}
